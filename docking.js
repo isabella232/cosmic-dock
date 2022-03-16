@@ -1809,14 +1809,6 @@ var DockManager = class DashToDock_DockManager {
             this._toggle.bind(this)
         ], [
             this._settings,
-            'changed::extend-height',
-            () => this._adjustPanelCorners()
-        ], [
-            this._settings,
-            'changed::dock-fixed',
-            () => this._adjustPanelCorners()
-        ], [
-            this._settings,
             'changed::show-trash',
             () => this._ensureLocations()
         ], [
@@ -1868,9 +1860,6 @@ var DockManager = class DashToDock_DockManager {
 
         // Make the necessary changes to Main.overview.dash
         this._prepareMainDash();
-
-        // Adjust corners if necessary
-        this._adjustPanelCorners();
 
         if (this._settings.get_boolean('multi-monitor')) {
             let nMon = Main.layoutManager.monitors.length;
@@ -2237,28 +2226,6 @@ var DockManager = class DashToDock_DockManager {
         this._oldDash = null;
 
         Me.imports.extension.dockManager = null;
-    }
-
-    /**
-     * Adjust Panel corners
-     */
-    _adjustPanelCorners() {
-        let position = Utils.getPosition();
-        let isHorizontal = ((position == St.Side.TOP) || (position == St.Side.BOTTOM));
-        let dockOnPrimary  = this._settings.get_boolean('multi-monitor') ||
-                             this._preferredMonitorIndex == Main.layoutManager.primaryIndex;
-
-        if (!isHorizontal && dockOnPrimary && this.settings.dockExtended && this.settings.dockFixed) {
-            Main.panel._rightCorner.hide();
-            Main.panel._leftCorner.hide();
-        }
-        else
-            this._revertPanelCorners();
-    }
-
-    _revertPanelCorners() {
-        Main.panel._leftCorner.show();
-        Main.panel._rightCorner.show();
     }
 };
 Signals.addSignalMethods(DockManager.prototype);
