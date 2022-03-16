@@ -629,7 +629,7 @@ var DockDash = GObject.registerClass({
         let spacing = themeNode.get_length('spacing');
 
         const [{ child: firstButton }] = iconChildren;
-        const { child: firstIcon } = firstButton.icon;
+        const { child: firstIcon } = firstButton._delegate.icon;
 
         // if no icons there's nothing to adjust
         if (!firstIcon)
